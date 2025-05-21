@@ -1,0 +1,14 @@
+PORT=7002
+SWAGGER_DEV_URL="http://localhost:7002"
+SWAGGER_PROD_URL="http://localhost:7002"
+
+DATABASE_URL=""
+
+# Autenticação - chave secreta
+JWT_SECRET=""
+
+# Tempo de expiração dos tokens
+ACCESS_TOKEN_EXPIRATION="15m"
+REFRESH_TOKEN_EXPIRATION="7d"
+
+# docker compose up --build

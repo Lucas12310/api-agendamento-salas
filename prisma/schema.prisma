@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model reserva {
+  id                                     Int      @id @default(autoincrement())
+  id_sala                                Int
+  id_usuario                             Int
+  turma                                  String   @db.VarChar(255)
+  hora_inicio                            DateTime @db.DateTime(0)
+  hora_fim                               DateTime @db.DateTime(0)
+  descricao                              String?  @db.Text
+  id_reservante                          Int
+  sala                                   sala     @relation(fields: [id_sala], references: [id], onUpdate: Restrict, map: "reserva_ibfk_1")
+  usuario_reserva_id_usuarioTousuario    usuario  @relation("reserva_id_usuarioTousuario", fields: [id_usuario], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "reserva_ibfk_2")
+  usuario_reserva_id_reservanteTousuario usuario  @relation("reserva_id_reservanteTousuario", fields: [id_reservante], references: [id], onUpdate: Restrict, map: "reserva_ibfk_3")
+
+  @@index([id_reservante], map: "id_reservante")
+  @@index([id_sala], map: "id_sala")
+  @@index([id_usuario], map: "id_usuario")
+}
+
+model sala {
+  id      Int       @id @default(autoincrement())
+  bloco   String    @db.VarChar(255)
+  andar   Int
+  nome    String    @db.VarChar(255)
+  reserva reserva[]
+}
+
+model usuario {
+  id                                     Int       @id @default(autoincrement())
+  nome                                   String    @db.VarChar(255)
+  email                                  String    @unique(map: "email") @db.VarChar(255)
+  senha                                  String    @db.VarChar(255)
+  siape                                  Int
+  foto                                   String?   @db.VarChar(255)
+  dape                                   Boolean
+  ativo                                  Boolean
+  reserva_reserva_id_usuarioTousuario    reserva[] @relation("reserva_id_usuarioTousuario")
+  reserva_reserva_id_reservanteTousuario reserva[] @relation("reserva_id_reservanteTousuario")
+}
